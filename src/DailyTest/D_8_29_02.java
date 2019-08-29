@@ -1,5 +1,6 @@
 package DailyTest;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 /*题目描述
@@ -38,6 +39,79 @@ import java.util.Scanner;
 0 4 0 20 0 12 0*/
 
 public class D_8_29_02 {
+	public static void main(String[] args) {
+		Scanner sc =new Scanner(System.in);
+        String line1 = sc.nextLine();
+        String line2 = sc.nextLine();
+        String[] p  = line1.split(" ");
+        int[] apple = new int[p.length];
+        int[] appll = new int[p.length];
+        for(int i = 0;i<p.length;i++) {
+        	apple[i]=Integer.parseInt(p[i]);
+        	appll[i]=Integer.parseInt(p[i]);
+        }
+        String[] q  = line2.split(" ");
+        int[] tree = new int[q.length];
+        for(int i = 0;i<q.length;i++) {
+        	tree[i]=Integer.parseInt(q[i]);
+        }
+        sc.close();
+        caculate(apple,tree,0);
+        show(appll,apple,tree,0);
+	}
+
+	private static void show(int[] appll,int[] apple,int[] tree, int i) {
+		// TODO Auto-generated method stub
+		if(tree.length ==0)return;
+		if(tree.length==1) {
+			System.out.print(apple[i]+" ");
+		}
+		else {
+			int flag = 0;
+			while(tree[flag]!=appll[i])
+				flag++;
+			
+			int[] left = new int[flag];
+			for(int i1=0;i1<flag;i1++)
+				left[i1]=tree[i1];
+			show(appll,apple,left,i+1);
+			System.out.print(apple[i]+" ");
+			int[] right = new int[tree.length-flag-1];
+			for(int i1=0;i1<tree.length-flag-1;i1++)
+				right[i1]=tree[flag+1+i1];
+	        show(appll,apple,right,i+1+flag);
+		}
+	}
+
+	private static int caculate(int[] apple,int[] tree, int i) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+		System.out.println(i);
+		System.out.println(Arrays.toString(apple));
+		System.out.println(Arrays.toString(tree));
+		if(tree.length ==0)return 0;
+		int result = apple[i];
+		if(tree.length==1) {
+			apple[i]=0;
+			return result;
+		}
+		else {
+			int flag = 0;
+			while(tree[flag]!=apple[i])
+				flag++;
+			int[] left = new int[flag];
+			for(int i1=0;i1<flag;i1++)
+				left[i1]=tree[i1];
+			int[] right = new int[tree.length-flag-1];
+			for(int i1=0;i1<tree.length-flag-1;i1++)
+				right[i1]=tree[flag+1+i1];
+			apple[i] = caculate(apple,left,i+1);
+	        apple[i] += caculate(apple,right,i+1+flag);
+	        return apple[i]+result;
+		}
+	}
+}
+class D2{
 	public static void main(String[] args) {
 		Scanner sc =new Scanner(System.in);
         String line1 = sc.nextLine();
@@ -81,7 +155,7 @@ public class D_8_29_02 {
 		}
 		else {
 			apple[i] = caculate(apple,i+1,j/2);
-	        apple[i] += caculate(apple,i+1+j/2,j/2);
+	        apple[i] += caculate(apple,i+1+j/2,j-j/2);
 	        return apple[i]+result;
 		}
 	}
